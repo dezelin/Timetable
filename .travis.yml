@@ -32,6 +32,7 @@ android:
 before_script:
   - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:14" --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
+  - chmod +x ./tools/android-wait-for-emulator.sh
   - bash ./tools/android-wait-for-emulator.sh
   - adb shell input keyevent 82 &
 
