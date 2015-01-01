@@ -1,4 +1,10 @@
 language: android
+
+branches:
+  only:
+    - master
+    - develop
+
 android:
   components:
     # Uncomment the lines below if you want to
@@ -30,14 +36,13 @@ android:
 
 # Emulator Management: Create, Start and Wait
 before_script:
-  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:14" --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - chmod +x ./tools/android-wait-for-emulator.sh
-  - bash ./tools/android-wait-for-emulator.sh
-  - adb shell input keyevent 82 &
+    - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:14" --abi armeabi-v7a
+    - emulator -avd test -no-skin -no-audio -no-window &
+    - chmod +x ./tools/android-wait-for-emulator.sh
+    - ./tools/android-wait-for-emulator.sh
+    - adb shell input keyevent 82 &
 
-branches:
-  only:
-    - master
-    - develop
-    
+script:
+    # By default Travis-ci executes './gradlew build connectedCheck' 
+    # if no 'script:' section found.
+    - ./gradlew build
