@@ -1,9 +1,10 @@
-# Individual files
-.DS_Store
-.gradle
-local.properties
 
 # Directories
 /.idea
 /build
 
+# Individual files
+.DS_Store
+.gradle
+local.properties
+Timetable.iml
