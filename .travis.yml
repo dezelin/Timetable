@@ -12,7 +12,7 @@ branches:
 env:
   global:
     # GOOGLE_CLOUD_MESSAGING_API_SECRET_KEY
-    secure: cLzHBRTmRnCOEg/KD9loBl4GxXycgGJZqO0DnlRYGGnodpjv18XS+9NIjgM8H0HGw4ERP2d1OaSTHikQmDgdafqO1s7ByOG3KKrEVKbZXR5uJlndPYky/AZMsDQg7DW2e6K4g4+GwqUx2EfgbesY7WmB5pQxik2BNZsUXo+20oU=
+    secure: "IWM2HyLoqGBOPd7aGklvGUR3+VbMZphrCujSimwcpaCYu4+bHyAbC/aFQdRl2hxViJJaLBeAPWkKGvRg0vBqLjIpkCar/2bbZIGLjToMD1LQKxZi6I9Pwflx3YbM3pu0Ms8K0o1naH7jtKX4Rjly/IoTClu7079sgf1VIKdR6zE="
 
 android:
   components:
