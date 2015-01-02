@@ -1,7 +1,7 @@
 language: android
 
 #### Use Travis-ci based on LXC
-sudo: false
+#sudo: false
 
 branches:
   only:
@@ -38,6 +38,7 @@ android:
     #### if you need to run emulator(s) during your tests
     - sys-img-x86-android-wear-20
     - sys-img-armeabi-v7a-android-14
+
   licenses:
     - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
@@ -45,37 +46,34 @@ android:
 
 #### Emulator Management: Create, Start and Wait
 before_script:
-    
-    - echo "Remove unused android components to gain disk space and avoid related issues"
-    - export IMGS=${ANDROID_HOME}system-images
-    - rm -R ${IMGS}/android-15
-    - rm -R ${IMGS}/android-16
-    - rm -R ${IMGS}/android-17
-    - rm -R ${IMGS}/android-18
-    - export PFRM=${ANDROID_HOME}platforms
-    - rm -R ${PFRM}/android-15
-    - rm -R ${PFRM}/android-16
-    - rm -R ${PFRM}/android-17
-    - rm -R ${PFRM}/android-18
-    - rm -R ${ANDROID_HOME}build-tools/21.1.1
-    - rm -R ${ANDROID_HOME}extras || true
+    #- echo "Remove unused android components to gain disk space and avoid related issues"
+    #- export IMGS=${ANDROID_HOME}system-images
+    #- rm -R ${IMGS}/android-15
+    #- rm -R ${IMGS}/android-16
+    #- rm -R ${IMGS}/android-17
+    #- rm -R ${IMGS}/android-18
+    #- export PFRM=${ANDROID_HOME}platforms
+    #- rm -R ${PFRM}/android-15
+    #- rm -R ${PFRM}/android-16
+    #- rm -R ${PFRM}/android-17
+    #- rm -R ${PFRM}/android-18
+    #- rm -R ${ANDROID_HOME}build-tools/21.1.1
+    #- rm -R ${ANDROID_HOME}extras || true
 
     - echo "Available memory in MB:"
     - free -mt
     - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:14" --abi armeabi-v7a
     - emulator -avd test -no-skin -no-audio -no-window &
-    #### Use our customized script
-    - chmod +x ./scripts/android-wait-for-emulator
-    - ./scripts/android-wait-for-emulator
+    - android-wait-for-emulator
     - adb shell input keyevent 82 &
     - adb logcat *:W | tee logcat.log>/dev/null 2>&1 &
     - free -mt
     #### Replace secret keys with encrypted environment values
     - sed -i "s/YOUR_KEY_HERE/$GOOGLE_CLOUD_MESSAGING_API_SECRET_KEY/g" backend/src/main/webapp/WEB-INF/appengine-web.xml
+    - sync
 
 script:
     #### By default Travis-ci executes './gradlew build connectedCheck'
     #### if no 'script:' section found.
     - ./gradlew build
     - cat logcat.log
-    - pkill -KILL -f adb
