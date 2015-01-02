@@ -1,7 +1,7 @@
 language: android
 
 # Use Travis-ci based on LXC
-sudo: false
+# sudo: false
 
 branches:
   only:
