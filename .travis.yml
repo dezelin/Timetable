@@ -1,6 +1,6 @@
 language: android
 
-# Use Travis-ci based on LXC
+#### Use Travis-ci based on LXC
 # sudo: false
 
 branches:
@@ -8,34 +8,34 @@ branches:
     - master
     - devel
 
-# Environment variables
+#### Environment variables
 env:
   global:
-    # GOOGLE_CLOUD_MESSAGING_API_SECRET_KEY
+    #### GOOGLE_CLOUD_MESSAGING_API_SECRET_KEY
     secure: "IWM2HyLoqGBOPd7aGklvGUR3+VbMZphrCujSimwcpaCYu4+bHyAbC/aFQdRl2hxViJJaLBeAPWkKGvRg0vBqLjIpkCar/2bbZIGLjToMD1LQKxZi6I9Pwflx3YbM3pu0Ms8K0o1naH7jtKX4Rjly/IoTClu7079sgf1VIKdR6zE="
 
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
+    #### Uncomment the lines below if you want to
+    #### use the latest revision of Android SDK Tools
     - platform-tools
     - tools
 
-    # The BuildTools version used by your project
+    #### The BuildTools version used by your project
     - build-tools-21.1.2
 
-    # The SDK version used to compile your project
+    #### The SDK version used to compile your project
     - android-14
     
-    # Additional components
+    #### Additional components
     - addon-google_apis-google-14
     - addon-google_gdk-google-19
     - extra-android-m2repository
     - extra-android-support
     - extra-google-m2repository
 
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
+    #### Specify at least one system image,
+    #### if you need to run emulator(s) during your tests
     - sys-img-x86-android-wear-20
     - sys-img-armeabi-v7a-android-14
   licenses:
@@ -43,21 +43,23 @@ android:
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
 
-# Emulator Management: Create, Start and Wait
+#### Emulator Management: Create, Start and Wait
 before_script:
     - echo "Available memory in MB:"
     - free -mt
     - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:14" --abi armeabi-v7a
+    #### Free as much memory as possible by droping all cached contents
+    - sync && sudo sh -c 'echo 3 >/proc/sys/vm/drop_caches'
     - emulator -avd test -no-skin -no-audio -no-window &
     - android-wait-for-emulator
     - adb shell input keyevent 82 &
-    # Free as much memory as possible by droping all cached contents
+    #### Free as much memory as possible by droping all cached contents
     - sync && sudo sh -c 'echo 3 >/proc/sys/vm/drop_caches'
     - free -mt
-    # Replace secret keys with encrypted environment values
+    #### Replace secret keys with encrypted environment values
     - sed -i "s/YOUR_KEY_HERE/$GOOGLE_CLOUD_MESSAGING_API_SECRET_KEY/g" backend/src/main/webapp/WEB-INF/appengine-web.xml
 
 script:
-    # By default Travis-ci executes './gradlew build connectedCheck' 
-    # if no 'script:' section found.
+    #### By default Travis-ci executes './gradlew build connectedCheck'
+    #### if no 'script:' section found.
     - ./gradlew build
