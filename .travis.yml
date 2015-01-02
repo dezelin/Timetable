@@ -1,5 +1,8 @@
 language: android
 
+# Use Travis-ci based on LXC
+sudo: false
+
 branches:
   only:
     - master
@@ -36,13 +39,13 @@ android:
 
 # Emulator Management: Create, Start and Wait
 before_script:
-    - echo "Available memory in GB:"
-    - free -gt
+    - echo "Available memory in MB:"
+    - free -mt
     - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:14" --abi armeabi-v7a
     - emulator -avd test -no-skin -no-audio -no-window &
     - android-wait-for-emulator
     - adb shell input keyevent 82 &
-    - free -gt
+    - free -mt
 
 script:
     # By default Travis-ci executes './gradlew build connectedCheck' 
