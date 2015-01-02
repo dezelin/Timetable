@@ -8,6 +8,12 @@ branches:
     - master
     - devel
 
+# Environment variables
+env:
+  global:
+    # GOOGLE_CLOUD_MESSAGING_API_SECRET_KEY
+    secure: cLzHBRTmRnCOEg/KD9loBl4GxXycgGJZqO0DnlRYGGnodpjv18XS+9NIjgM8H0HGw4ERP2d1OaSTHikQmDgdafqO1s7ByOG3KKrEVKbZXR5uJlndPYky/AZMsDQg7DW2e6K4g4+GwqUx2EfgbesY7WmB5pQxik2BNZsUXo+20oU=
+
 android:
   components:
     # Uncomment the lines below if you want to
@@ -46,6 +52,8 @@ before_script:
     - android-wait-for-emulator
     - adb shell input keyevent 82 &
     - free -mt
+    # Replace secret keys with encrypted environment values
+    - sed -i "s/YOUR_KEY_HERE/$GOOGLE_CLOUD_MESSAGING_API_SECRET_KEY/g" backend/src/main/webapp/WEB-INF/appengine-web.xml
 
 script:
     # By default Travis-ci executes './gradlew build connectedCheck' 
